@@ -1,0 +1,19 @@
+/* publish the html and xml reports */
+
+def call(def reportName) {
+    dir('.') {
+        def reportFilesString = sh(script: 'find ./tests/validation/reports -name "*.html"', returnStdout: true).split().join(',')
+        echo "reportFiles: " + reportFilesString
+
+        publishHTML (target: [
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: ".",
+                                reportFiles: reportFilesString,
+                                reportName: reportName
+                            ])
+        // Archive all test reports (currently combines all into one report)
+        step([$class: 'JUnitResultArchiver', testResults: "**/*.xml"])
+    }
+}
