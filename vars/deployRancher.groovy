@@ -25,7 +25,7 @@ def call(Map params) {
             "pytest -v -s --junit-xml=${params.reportName}.xml --html=reports/${params.reportName}.html " +
             "-k ${deployTest} tests/v3_api/\'"
         
-        sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/kube_config_cluster-ha-filled.yml ."
+        sh "docker cp $containerName:/src/rancher-validation/tests/v3_api/resource/kube_config_cluster-ha-filled.yml ."
         archiveArtifacts "kube_config_cluster-ha-filled.yml"
         
     } else if ("SN" == params.installType) {
