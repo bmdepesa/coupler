@@ -1,17 +1,17 @@
 def rancher_version() {
-        try { if ('' != RANCHER_VERSION) { return RANCHER_VERSION } }
+        try { if ('' != env.RANCHER_VERSION) { return env.RANCHER_VERSION } }
         catch (MissingPropertyException e) {}
 
-        try { return DOCKER_TRIGGER_TAG }
+        try { return env.DOCKER_TRIGGER_TAG }
         catch (MissingPropertyException e) {}
 
-        try { if ('' != RANCHER_SERVER_VERSION) { return RANCHER_SERVER_VERSION } }
+        try { if ('' != env.RANCHER_SERVER_VERSION) { return env.RANCHER_SERVER_VERSION } }
         catch (MissingPropertyException e) {}
 
-        try { if ('' != RANCHER_IMAGE_TAG) { return RANCHER_IMAGE_TAG } }
+        try { if ('' != env.RANCHER_IMAGE_TAG) { return env.RANCHER_IMAGE_TAG } }
         catch (MissingPropertyException e) {}
 
-        try { if ('' != RANCHER_CHART_VERSION) { return "v" + RANCHER_VERSION } }
+        try { if ('' != env.RANCHER_CHART_VERSION) { return "v" + env.RANCHER_VERSION } }
         catch (MissingPropertyException e) {}
 
         echo  'Neither RANCHER_VERSION nor DOCKER_TRIGGER_TAG have been specified!'
@@ -25,7 +25,7 @@ def lastBuildResult() {
 
 def via_webhook() {
     try {
-        def foo = DOCKER_TRIGGER_TAG
+        def foo = env.DOCKER_TRIGGER_TAG
         return true
     } catch(MissingPropertyException) {
         return false
