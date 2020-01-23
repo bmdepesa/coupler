@@ -16,7 +16,7 @@ def via_webhook() {
     }
 }
 
-def call(Map env) {
+def call(def env) {
 
     try { if ('' != env.RANCHER_VERSION) { return env.RANCHER_VERSION } }
     catch (MissingPropertyException e) {}
