@@ -4,7 +4,7 @@ def lastBuildResult() {
 }
 
 def via_webhook(env) {
-    if (env.DOCKER_TRIGGER_TAG != "") {
+    if (env.DOCKER_TRIGGER_TAG != "" && env.DOCKER_TRIGGER_TAG != null) {
         return true
     }
     return false
