@@ -14,25 +14,26 @@ def via_webhook(env) {
 
 def call(def env) {
     echo "Env: " + env
-    try { if ('' != env.RANCHER_VERSION) { return env.RANCHER_VERSION } }
+    def rancher_version_in = ""
+
+    try { if ('' != env.RANCHER_VERSION) { rancher_version_in = env.RANCHER_VERSION } }
     catch (MissingPropertyException e) {}
 
-    try { return env.DOCKER_TRIGGER_TAG }
+    try { rancher_version_in = env.DOCKER_TRIGGER_TAG }
     catch (MissingPropertyException e) {}
 
-    try { if ('' != env.RANCHER_SERVER_VERSION) { return env.RANCHER_SERVER_VERSION } }
+    try { if ('' != env.RANCHER_SERVER_VERSION) { rancher_version_in = env.RANCHER_SERVER_VERSION } }
     catch (MissingPropertyException e) {}
 
-    try { if ('' != env.RANCHER_IMAGE_TAG) { return env.RANCHER_IMAGE_TAG } }
+    try { if ('' != env.RANCHER_IMAGE_TAG) { rancher_version_in = env.RANCHER_IMAGE_TAG } }
     catch (MissingPropertyException e) {}
 
-    try { if ('' != env.RANCHER_CHART_VERSION) { return "v" + env.RANCHER_VERSION } }
+    try { if ('' != env.RANCHER_CHART_VERSION) { rancher_version_in = "v" + env.RANCHER_VERSION } }
     catch (MissingPropertyException e) {}
 
     echo  'Neither RANCHER_VERSION nor DOCKER_TRIGGER_TAG have been specified!'
     error()
     
-    def rancher_version_in = rancher_version()
     def String rancher_version_regex = "^v[\\d]\\.[\\d]\\.[\\d][\\-rc\\d]+\$"
 
     // RANCHER_VERSION resolution is first via Jenkins Build Parameter RANCHER_VERSION fed in from console,
