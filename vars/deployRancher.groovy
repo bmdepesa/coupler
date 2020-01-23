@@ -41,7 +41,7 @@ def call(Map params) {
     sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/rancher_env.config ."
     load "rancher_env.config"
 
-    collectReports(deployContainer)
+    collectReports(containerName)
 
     return containerName
 }

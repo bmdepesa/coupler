@@ -22,9 +22,6 @@ def call(def env) {
     
     def String rancher_version_regex = "^v[\\d]\\.[\\d]\\.[\\d][\\-rc\\d]+\$"
 
-    // RANCHER_VERSION resolution is first via Jenkins Build Parameter RANCHER_VERSION fed in from console,
-    // then from $DOCKER_TRIGGER_TAG which is sourced from the Docker Hub Jenkins plugin webhook.
-
     if ( true == via_webhook(env) && (!(rancher_version_in ==~ rancher_version_regex)) ) {
         println("Received RANCHER_VERSION \'${rancher_version_in}\' via webhook which does not match regex \'${rancher_version_regex}\'.")
         println("** This will **not** result in a pipeline run.")
