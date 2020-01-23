@@ -11,14 +11,13 @@ def via_webhook(env) {
 }
 
 def call(def env) {
-    echo "Env: " + env
     def rancher_version_in = ""
 
-    if ('' != env.RANCHER_VERSION) { rancher_version_in = env.RANCHER_VERSION }
-    if ('' != env.RANCHER_SERVER_VERSION) { rancher_version_in = env.RANCHER_SERVER_VERSION }
-    if ('' != env.RANCHER_CHART_VERSION) { rancher_version_in = "v" + env.RANCHER_CHART_VERSION }
-    if ('' != env.RANCHER_IMAGE_TAG) { rancher_version_in = env.RANCHER_IMAGE_TAG }
-    if ('' != env.DOCKER_TRIGGER_TAG) { rancher_version_in = env.DOCKER_TRIGGER_TAG }
+    if ('' != env.RANCHER_VERSION && env.RANCHER_VERSION != null) { rancher_version_in = env.RANCHER_VERSION }
+    if ('' != env.RANCHER_SERVER_VERSION && env.RANCHER_SERVER_VERSION != null) { rancher_version_in = env.RANCHER_SERVER_VERSION }
+    if ('' != env.RANCHER_CHART_VERSION && env.RANCHER_CHART_VERSION != null) { rancher_version_in = "v" + env.RANCHER_CHART_VERSION }
+    if ('' != env.RANCHER_IMAGE_TAG && env.RANCHER_IMAGE_TAG != null) { rancher_version_in = env.RANCHER_IMAGE_TAG }
+    if ('' != env.DOCKER_TRIGGER_TAG && env.DOCKER_TRIGGER_TAG != null) { rancher_version_in = env.DOCKER_TRIGGER_TAG }
     
     def String rancher_version_regex = "^v[\\d]\\.[\\d]\\.[\\d][\\-rc\\d]+\$"
 
