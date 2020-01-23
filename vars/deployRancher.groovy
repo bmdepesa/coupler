@@ -38,7 +38,7 @@ def call(Map params) {
         echo "Not a valid install type"
     }
 
-    sh "docker cp ${containerName}:/src/rancher-validation/rancher_env.config ."
+    sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/rancher_env.config ."
     load "rancher_env.config"
 
     collectReports(deployContainer)
