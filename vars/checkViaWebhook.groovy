@@ -1,13 +1,9 @@
-def rancher_version() {
-        
-    }
-
 def lastBuildResult() {
     def previous_build = currentBuild.getPreviousBuild()
     if ( null != previous_build ) { return previous_build.result } else { return 'UNKNOWN' }
 }
 
-def via_webhook() {
+def via_webhook(env) {
     try {
         def foo = env.DOCKER_TRIGGER_TAG
         return true
@@ -17,7 +13,7 @@ def via_webhook() {
 }
 
 def call(def env) {
-
+    echo "Env: " + env
     try { if ('' != env.RANCHER_VERSION) { return env.RANCHER_VERSION } }
     catch (MissingPropertyException e) {}
 
@@ -42,7 +38,7 @@ def call(def env) {
     // RANCHER_VERSION resolution is first via Jenkins Build Parameter RANCHER_VERSION fed in from console,
     // then from $DOCKER_TRIGGER_TAG which is sourced from the Docker Hub Jenkins plugin webhook.
 
-    if ( true == via_webhook() && (!(rancher_version_in ==~ rancher_version_regex)) ) {
+    if ( true == via_webhook(env) && (!(rancher_version_in ==~ rancher_version_regex)) ) {
         println("Received RANCHER_VERSION \'${rancher_version_in}\' via webhook which does not match regex \'${rancher_version_regex}\'.")
         println("** This will **not** result in a pipeline run.")
         currentBuild.result = lastBuildResult()
