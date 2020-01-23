@@ -21,7 +21,7 @@ def call(def env) {
     try { if ('' != env.RANCHER_VERSION) { rancher_version_in = env.RANCHER_VERSION } }
     catch (MissingPropertyException e) {}
 
-    try { if ('' != env.DOCKER_TRIGGER_TAG) { rancher_version_in = env.DOCKER_TRIGGER_TAG }
+    try { if ('' != env.DOCKER_TRIGGER_TAG) { rancher_version_in = env.DOCKER_TRIGGER_TAG } }
     catch (MissingPropertyException e) {}
 
     try { if ('' != env.RANCHER_SERVER_VERSION) { rancher_version_in = env.RANCHER_SERVER_VERSION } }
