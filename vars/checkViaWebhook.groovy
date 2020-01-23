@@ -37,4 +37,5 @@ def call(Map params) {
         currentBuild.result = lastBuildResult()
         error()
     }
+    return rancher_version_in
 }
