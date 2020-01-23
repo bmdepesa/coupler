@@ -5,8 +5,17 @@ def rancher_version() {
         try { return DOCKER_TRIGGER_TAG }
         catch (MissingPropertyException e) {}
 
+        try { if ('' != RANCHER_SERVER_VERSION) { return RANCHER_SERVER_VERSION } }
+        catch (MissingPropertyException e) {}
+
+        try { if ('' != RANCHER_IMAGE_TAG) { return RANCHER_IMAGE_TAG } }
+        catch (MissingPropertyException e) {}
+
+        try { if ('' != RANCHER_CHART_VERSION) { return "v" + RANCHER_VERSION } }
+        catch (MissingPropertyException e) {}
+
         echo  'Neither RANCHER_VERSION nor DOCKER_TRIGGER_TAG have been specified!'
-        //error()
+        error()
     }
 
 def lastBuildResult() {
