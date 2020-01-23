@@ -1,21 +1,5 @@
 def rancher_version() {
-        try { if ('' != env.RANCHER_VERSION) { return env.RANCHER_VERSION } }
-        catch (MissingPropertyException e) {}
-
-        try { return env.DOCKER_TRIGGER_TAG }
-        catch (MissingPropertyException e) {}
-
-        try { if ('' != env.RANCHER_SERVER_VERSION) { return env.RANCHER_SERVER_VERSION } }
-        catch (MissingPropertyException e) {}
-
-        try { if ('' != env.RANCHER_IMAGE_TAG) { return env.RANCHER_IMAGE_TAG } }
-        catch (MissingPropertyException e) {}
-
-        try { if ('' != env.RANCHER_CHART_VERSION) { return "v" + env.RANCHER_VERSION } }
-        catch (MissingPropertyException e) {}
-
-        echo  'Neither RANCHER_VERSION nor DOCKER_TRIGGER_TAG have been specified!'
-        error()
+        
     }
 
 def lastBuildResult() {
@@ -32,7 +16,25 @@ def via_webhook() {
     }
 }
 
-def call(Map params) {
+def call(Map env) {
+
+    try { if ('' != env.RANCHER_VERSION) { return env.RANCHER_VERSION } }
+    catch (MissingPropertyException e) {}
+
+    try { return env.DOCKER_TRIGGER_TAG }
+    catch (MissingPropertyException e) {}
+
+    try { if ('' != env.RANCHER_SERVER_VERSION) { return env.RANCHER_SERVER_VERSION } }
+    catch (MissingPropertyException e) {}
+
+    try { if ('' != env.RANCHER_IMAGE_TAG) { return env.RANCHER_IMAGE_TAG } }
+    catch (MissingPropertyException e) {}
+
+    try { if ('' != env.RANCHER_CHART_VERSION) { return "v" + env.RANCHER_VERSION } }
+    catch (MissingPropertyException e) {}
+
+    echo  'Neither RANCHER_VERSION nor DOCKER_TRIGGER_TAG have been specified!'
+    error()
     
     def rancher_version_in = rancher_version()
     def String rancher_version_regex = "^v[\\d]\\.[\\d]\\.[\\d][\\-rc\\d]+\$"
@@ -46,5 +48,6 @@ def call(Map params) {
         currentBuild.result = lastBuildResult()
         error()
     }
+
     return rancher_version_in
 }
