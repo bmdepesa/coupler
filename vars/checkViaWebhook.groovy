@@ -30,7 +30,7 @@ def call(def env) {
     try { if ('' != env.RANCHER_IMAGE_TAG) { rancher_version_in = env.RANCHER_IMAGE_TAG } }
     catch (MissingPropertyException e) {}
 
-    try { if ('' != env.RANCHER_CHART_VERSION) { rancher_version_in = "v" + env.RANCHER_VERSION } }
+    try { if ('' != env.RANCHER_CHART_VERSION) { rancher_version_in = "v" + env.RANCHER_CHART_VERSION } }
     catch (MissingPropertyException e) {}
     
     def String rancher_version_regex = "^v[\\d]\\.[\\d]\\.[\\d][\\-rc\\d]+\$"
