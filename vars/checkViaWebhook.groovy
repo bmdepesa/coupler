@@ -5,11 +5,13 @@ def lastBuildResult() {
 
 def via_webhook(env) {
     try {
-        def foo = env.DOCKER_TRIGGER_TAG
-        return true
+        if (env.DOCKER_TRIGGER_TAG != "") {
+            return true
+        }
     } catch(MissingPropertyException) {
         return false
     }
+    return false
 }
 
 def call(def env) {
