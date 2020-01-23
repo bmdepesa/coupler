@@ -30,9 +30,6 @@ def call(def env) {
 
     try { if ('' != env.RANCHER_CHART_VERSION) { rancher_version_in = "v" + env.RANCHER_VERSION } }
     catch (MissingPropertyException e) {}
-
-    echo  'Neither RANCHER_VERSION nor DOCKER_TRIGGER_TAG have been specified!'
-    error()
     
     def String rancher_version_regex = "^v[\\d]\\.[\\d]\\.[\\d][\\-rc\\d]+\$"
 
