@@ -28,7 +28,7 @@ def call(Map params) {
         
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/kube_config_* ."
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/ha_delete.config"
-        archiveArtifacts "kube_config_cluster-ha-filled.yml"
+        archiveArtifacts "kube_config_*"
         
     } else if ("SN" == params.installType) {
         sh "docker run --name ${containerName} -t --env-file .env " +
