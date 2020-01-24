@@ -9,44 +9,56 @@ def call(Map params) {
     def imageName = "rancher-validation-${env.JOB_NAME}${env.BUILD_NUMBER}"
 
     try {
+        def deployTest = ""
         if ("HA" == params.installType) {
-            def deployTest = "test_create_selfsigned_ha"
-
             if ( "selfsigned" == params.certs) {
-                // already matched
+                deployTest = "test_create_selfsigned_ha"
             } else if ("letsencrypt" == params.certs) {
                 deployTest = "test_create_letsencrypt_ha"
             } else if ("provided" == param.certs) {
                 deployTest = "test_create_provided_certs_ha"
             } else {
-                echo "Cert type not provided or not found -- defaulting to self signed."
+                echo "Cert type not provided or not found!"
             }
-
-            sh "docker run --name ${containerName} -t --env-file .env " +
-                "${imageName} /bin/bash -c \'" +
-                "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
-                "-k ${deployTest} tests/v3_api/\'"
-            
-            sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/out/ ."
-            archiveArtifacts "out/kube_config_*"
-            
         } else if ("SN" == params.installType) {
-            sh "docker run --name ${containerName} -t --env-file .env " +
-                "${imageName} /bin/bash -c \'" +
-                "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html" +
-                "-k test_deploy_rancher_server tests/v3_api/\'"
+            if ( "selfsigned" == params.certs) {
+                deployTest = "test_deploy_rancher_server"
+            } else if ("letsencrypt" == params.certs) {
+                // tbd
+            } else if ("provided" == param.certs) {
+                // tbd
+            } else {
+                echo "Cert type not provided or not found!"
+            }
         } else {
-            // not a valid install type
             echo "Not a valid install type"
+        }
+
+        if (deployTest == "") {
+            error("Unable to find a valid deployment configuration!")
+        }
+
+        sh "docker run --name ${containerName} -t --env-file .env " +
+            "${imageName} /bin/bash -c \'" +
+            "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
+            "-k ${deployTest} tests/v3_api/\'"
+    } catch(err) {
+        echo "Error deploying Rancher!"
+        echo err
+    }
+
+    try {
+        sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/out/ ."
+        if ("HA") == params.installType) {
+            archiveArtifacts "out/kube_config_*"
         }
 
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/rancher_env.config ."
         load "rancher_env.config"
 
         collectReports(containerName)
-    } catch(err) {
-        echo "Error deploying Rancher!"
-        echo err
+    } catch (err) {
+        echo "Error archiving resources"
     }
 
     return containerName
