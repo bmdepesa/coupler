@@ -28,5 +28,11 @@ def call(def env) {
         error()
     }
 
-    return rancher_version_in
+    def branch = "v2.1"
+    if (rancher_version.startsWith("v2.2") || rancher_version.startsWith("v2.3") || rancher_version == "master-head") {
+        branch = "master"
+    }
+    if (env.BRANCH != "" && env.Branch != null) {
+        branch = "${env.BRANCH}"
+    }
 }

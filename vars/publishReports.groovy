@@ -3,7 +3,7 @@
 def call(def reportName) {
     stage('Test Report') {
         dir('.') {
-            def reportFilesString = sh(script: 'find ./tests/validation/reports -name "*.html"', returnStdout: true).split().join(',')
+            def reportFilesString = sh(script: 'reports -name "*.html"', returnStdout: true).split().join(',')
             echo "reportFiles: " + reportFilesString
 
             publishHTML (target: [
