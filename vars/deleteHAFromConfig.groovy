@@ -1,5 +1,6 @@
 def call(Map params) {
-    def containerName = "${env.JOB_NAME}${env.BUILD_NUMBER}-delete"
+    def random = Math.abs(new Random().nextInt() % 1000 + 1)
+    def containerName = "${env.JOB_NAME}${env.BUILD_NUMBER}-delete-${random}"
     echo "Loading HA config for deletion"
     sh "docker cp tests/validation/ha_delete.config ${containerName}:/src/rancher-validation/tests/v3_api/resource"
     sh "docker run --name ${containerName} -t --env-file .env " +

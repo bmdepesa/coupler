@@ -4,7 +4,8 @@ def call(Map params) {
     // params.containerName = <string>
     // params.reportName = <string>
     
-    def containerName = "${env.JOB_NAME}${env.BUILD_NUMBER}-deploy"
+    def random = Math.abs(new Random().nextInt() % 1000 + 1)
+    def containerName = "${env.JOB_NAME}${env.BUILD_NUMBER}-deploy-${random}"
     def imageName = "rancher-validation-${env.JOB_NAME}${env.BUILD_NUMBER}"
 
     if ("HA" == params.installType) {
@@ -25,7 +26,7 @@ def call(Map params) {
             "pytest -v -s --junit-xml=${params.reportName}.xml --html=reports/${params.reportName}.html " +
             "-k ${deployTest} tests/v3_api/\'"
         
-        sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/kube_config_cluster-ha-filled.yml ."
+        sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/kube_config_* ."
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/ha_delete.config"
         archiveArtifacts "kube_config_cluster-ha-filled.yml"
         
