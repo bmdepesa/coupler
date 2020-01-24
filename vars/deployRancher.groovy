@@ -27,7 +27,7 @@ def call(Map params) {
             "-k ${deployTest} tests/v3_api/\'"
         
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/out/ ."
-        archiveArtifacts "kube_config_*"
+        archiveArtifacts "out/kube_config_*"
         
     } else if ("SN" == params.installType) {
         sh "docker run --name ${containerName} -t --env-file .env " +
