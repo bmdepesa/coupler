@@ -35,4 +35,5 @@ def call(def env) {
     if (env.BRANCH != "" && env.Branch != null) {
         branch = "${env.BRANCH}"
     }
+    return branch
 }
