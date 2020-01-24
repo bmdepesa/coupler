@@ -23,7 +23,7 @@ def call(Map params) {
 
         sh "docker run --name ${containerName} -t --env-file .env " +
             "${imageName} /bin/bash -c \'" +
-            "pytest -v -s --junit-xml=${params.reportName}.xml --html=reports/${params.reportName}.html " +
+            "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
             "-k ${deployTest} tests/v3_api/\'"
         
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/out/ ."
