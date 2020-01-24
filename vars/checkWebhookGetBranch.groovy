@@ -32,7 +32,7 @@ def call(def env) {
     if (rancher_version_in.startsWith("v2.2") || rancher_version_in.startsWith("v2.3") || rancher_version_in == "master-head") {
         branch = "master"
     }
-    if (env.BRANCH != "" && env.Branch != null) {
+    if (env.BRANCH != "" && env.BRANCH != null) {
         branch = "${env.BRANCH}"
     }
     return branch
