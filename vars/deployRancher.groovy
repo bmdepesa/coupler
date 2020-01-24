@@ -9,7 +9,7 @@ def call(Map params) {
     def imageName = "rancher-validation-${env.JOB_NAME}${env.BUILD_NUMBER}"
 
     if ("HA" == params.installType) {
-        def deployTest = "test_create_ha"
+        def deployTest = "test_create_selfsigned_ha"
 
         if ( "selfsigned" == params.certs) {
             // already matched
