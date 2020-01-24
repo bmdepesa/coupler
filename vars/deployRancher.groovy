@@ -31,7 +31,7 @@ def call(Map params) {
     } else if ("SN" == params.installType) {
         sh "docker run --name ${containerName} -t --env-file .env " +
             "${imageName} /bin/bash -c \'" +
-            "pytest -v -s --junit-xml=${params.reportName}.xml --html=reports/${params.reportName}.html" +
+            "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html" +
             "-k test_deploy_rancher_server tests/v3_api/\'"
     } else {
         // not a valid install type
