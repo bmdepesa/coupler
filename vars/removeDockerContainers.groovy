@@ -1,7 +1,7 @@
-def call(def containers) {
+def call(List containers) {
     echo "Removing all containers" 
-    containers.each { containerName ->
-        sh "docker stop ${containerName}"
-        sh "docker rm -v ${containerName}"
+    containers.each { 
+        echo "Removing ${it}"
+        sh "docker stop ${it} && docker rm -v ${it}"
     }
 }

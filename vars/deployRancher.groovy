@@ -27,7 +27,7 @@ def call(Map params) {
             "-k ${deployTest} tests/v3_api/\'"
         
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/out/ ."
-        sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/ha_delete.config"
+        sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/ha_delete.config ."
         archiveArtifacts "kube_config_*"
         
     } else if ("SN" == params.installType) {
