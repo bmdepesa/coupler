@@ -6,8 +6,9 @@ def call(String version, Map params) {
         branch = "master"
     }
 
-    try { branch = params.BRANCH }
-    catch(MissingPropertyException e) {}
+    if ('' != params.BRANCH && params.BRANCH != null) {
+        branch = params.BRANCH
+    }
     
     echo "Got branch: " + branch
     return branch
