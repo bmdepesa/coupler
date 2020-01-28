@@ -10,7 +10,7 @@ def call(Map params) {
             "-k test_delete_ha_from_config tests/v3_api/\'"
     } catch(err) {
         echo "Unable to delete HA installation -- does config file exist?"
-        echo err
+        echo "Error: " + err.message
     }
     return containerName
 }

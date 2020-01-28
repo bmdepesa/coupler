@@ -43,8 +43,7 @@ def call(Map params) {
             "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
             "-k ${deployTest} tests/v3_api/\'"
     } catch(err) {
-        echo "Error deploying Rancher!"
-        echo err
+        echo "Error deploying Rancher: " + err.message
     }
 
     try {
@@ -58,7 +57,7 @@ def call(Map params) {
 
         collectReports(containerName)
     } catch (err) {
-        echo "Error archiving resources"
+        echo "Error archiving resources " + err.message
     }
 
     return containerName

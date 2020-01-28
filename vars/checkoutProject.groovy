@@ -1,5 +1,4 @@
 def call(def branch) {
-    deleteDir()
     checkout([
             $class: 'GitSCM',
             branches: [[name: "*/${branch}"]],
