@@ -24,6 +24,10 @@ def call(Map params) {
             }
 
             if (params.version != '' && params.version != null) {
+                // if the docker webhook kicks off the build, we need to remove the 'v' from the chart version
+                if (params.version.startsWith('v')) {
+                    params.version = params.version.substring(1)
+                }
                 exportString += "export RANCHER_CHART_VERSION=${params.version} && "
             }
         } else if ("SN" == params.installType) {

@@ -10,8 +10,7 @@ def call(def env) {
       if (!(DOCKER_TRIGGER_TAG ==~ rancher_version_regex)) {
         println("Received RANCHER_VERSION \'${DOCKER_TRIGGER_TAG}\' via webhook which does not match regex \'${rancher_version_regex}\'.")
         println("** This will **not** result in a pipeline run.")
-        currentBuild.result = lastBuildResult()
-        error()
+        currentBuild.result = 'SUCCESS'
       }
     } catch(MissingPropertyException e) {
       // Build did not run from Docker webhook if DOCKER_TRIGGER_TAG doesn't exist
