@@ -3,6 +3,7 @@ def call(Map params) {
     // params.certs = [ "selfsigned", "letsencrypt", "provided"]
     // params.containerName = <string>
     // params.reportName = <string>
+    // params.version = <string>
     
     def random = Math.abs(new Random().nextInt() % 1000 + 1)
     def containerName = "${env.JOB_NAME}${env.BUILD_NUMBER}-deploy-${random}"
@@ -15,7 +16,7 @@ def call(Map params) {
                 deployTest = "test_create_selfsigned_ha"
             } else if ("letsencrypt" == params.certs) {
                 deployTest = "test_create_letsencrypt_ha"
-            } else if ("provided" == param.certs) {
+            } else if ("provided" == params.certs) {
                 deployTest = "test_create_provided_certs_ha"
             } else {
                 echo "Cert type not provided or not found!"
@@ -25,7 +26,7 @@ def call(Map params) {
                 deployTest = "test_deploy_rancher_server"
             } else if ("letsencrypt" == params.certs) {
                 // tbd
-            } else if ("provided" == param.certs) {
+            } else if ("provided" == params.certs) {
                 // tbd
             } else {
                 echo "Cert type not provided or not found!"
@@ -38,10 +39,17 @@ def call(Map params) {
             error("Unable to find a valid deployment configuration!")
         }
 
-        // sh "docker run --name ${containerName} -t --env-file .env " +
-        //     "${imageName} /bin/bash -c \'" +
-        //     "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
-        //     "-k ${deployTest} tests/v3_api/\'"
+        def exportString = ""
+        if (params.version != '' && params.version != null) {
+            exportString += "export RANCHER_CHART_VERSION=${params.version} && "
+        }
+
+        deployString =  "docker run --name ${containerName} -t --env-file .env " +
+                         "${imageName} /bin/bash -c \'" + exportString +
+                         "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
+                         "-k ${deployTest} tests/v3_api/\'"
+        echo "Deploy string: " + deployString
+        //sh deployString
     } catch(err) {
         echo "Error deploying Rancher: " + err.message
     }
