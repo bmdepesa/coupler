@@ -56,8 +56,7 @@ def call(Map params) {
                          "${imageName} /bin/bash -c \'" + exportString +
                          "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
                          "-k ${deployTest} tests/v3_api/\'"
-        echo "Deploy string: " + deployString
-        //sh deployString
+        sh deployString
     } catch(err) {
         echo "Error deploying Rancher: " + err.message
     }
