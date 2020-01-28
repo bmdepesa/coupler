@@ -14,6 +14,6 @@ def call(def env) {
         error()
       }
     } catch(MissingPropertyException e) {
-      // Build did not run from Docker webhook
+      // Build did not run from Docker webhook if DOCKER_TRIGGER_TAG doesn't exist
     }
 }

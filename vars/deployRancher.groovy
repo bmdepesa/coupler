@@ -60,6 +60,7 @@ def call(Map params) {
 
     try {
         sh "docker cp ${containerName}:/src/rancher-validation/tests/v3_api/resource/out/ ."
+
         if ("HA" == params.installType) {
             archiveArtifacts "out/kube_config_*"
         }
