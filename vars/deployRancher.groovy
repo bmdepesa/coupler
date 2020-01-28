@@ -11,6 +11,7 @@ def call(Map params) {
 
     try {
         def deployTest = ""
+        def exportString = ""
         if ("HA" == params.installType) {
             if ( "selfsigned" == params.certs) {
                 deployTest = "test_create_selfsigned_ha"
@@ -20,6 +21,10 @@ def call(Map params) {
                 deployTest = "test_create_provided_certs_ha"
             } else {
                 echo "Cert type not provided or not found!"
+            }
+
+            if (params.version != '' && params.version != null) {
+                exportString += "export RANCHER_CHART_VERSION=${params.version} && "
             }
         } else if ("SN" == params.installType) {
             if ( "selfsigned" == params.certs) {
@@ -31,17 +36,16 @@ def call(Map params) {
             } else {
                 echo "Cert type not provided or not found!"
             }
+            
+            if (params.version != '' && params.version != null) {
+                exportString += "export RANCHER_SERVER_VERSION=${params.version} && "
+            }
         } else {
             echo "Not a valid install type"
         }
 
         if (deployTest == "") {
             error("Unable to find a valid deployment configuration!")
-        }
-
-        def exportString = ""
-        if (params.version != '' && params.version != null) {
-            exportString += "export RANCHER_CHART_VERSION=${params.version} && "
         }
 
         deployString =  "docker run --name ${containerName} -t --env-file .env " +

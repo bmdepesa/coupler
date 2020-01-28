@@ -6,6 +6,7 @@ def call(String version, Map params) {
         branch = "master"
     }
 
+    // override if BRANCH param is set
     if ('' != params.BRANCH && params.BRANCH != null) {
         branch = params.BRANCH
     }
