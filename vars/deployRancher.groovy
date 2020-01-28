@@ -38,10 +38,10 @@ def call(Map params) {
             error("Unable to find a valid deployment configuration!")
         }
 
-        sh "docker run --name ${containerName} -t --env-file .env " +
-            "${imageName} /bin/bash -c \'" +
-            "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
-            "-k ${deployTest} tests/v3_api/\'"
+        // sh "docker run --name ${containerName} -t --env-file .env " +
+        //     "${imageName} /bin/bash -c \'" +
+        //     "pytest -v -s --junit-xml=reports/${params.reportName}.xml --html=reports/${params.reportName}.html " +
+        //     "-k ${deployTest} tests/v3_api/\'"
     } catch(err) {
         echo "Error deploying Rancher: " + err.message
     }
@@ -57,7 +57,7 @@ def call(Map params) {
 
         collectReports(containerName)
     } catch (err) {
-        echo "Error archiving resources " + err.message
+        echo "Error archiving resources: " + err.message
     }
 
     return containerName
